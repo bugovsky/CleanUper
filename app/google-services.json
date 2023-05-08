@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "750092301969",
+    "project_id": "cleanuper-7f95e",
+    "storage_bucket": "cleanuper-7f95e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750092301969:android:301d6d95b9ab45d571b130",
+        "android_client_info": {
+          "package_name": "com.example.cleanuper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750092301969-23k90petnnngeugsv7grsiq7fn1q1eoe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfcmDT-2s5Ngd-2uZzR1_dWaWT9LKH658"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750092301969-23k90petnnngeugsv7grsiq7fn1q1eoe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
