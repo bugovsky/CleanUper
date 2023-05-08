@@ -2,4 +2,8 @@
     <string name="app_name">CleanUper</string>
     <string name="login">Войти</string>
     <string name="welcome_phrase">Добро пожаловать!</string>
+    <string name="not_signed_up">Пользуетесь впервые? <b>Зарегистрироваться</b></string>
+    <string name="sign_up"><b>Зарегистрироваться</b></string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="new_account">Создать аккаунт</string>
 </resources>
