@@ -1,4 +1,4 @@
-package com.example.cleanuper
+package com.example.cleanuper.authentication
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import com.example.cleanuper.MainActivity
 import com.example.cleanuper.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -24,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
         progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Wait")
+        progressDialog.setTitle("Подождите")
         progressDialog.setCanceledOnTouchOutside(false)
         binding.loginButton.setOnClickListener {
             validateData()
@@ -39,6 +40,8 @@ class LoginActivity : AppCompatActivity() {
         password = binding.passwordForm.text.toString().trim()
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Почта неверно заполнена!", Toast.LENGTH_SHORT).show()
+        } else if (password.isEmpty()) {
+            Toast.makeText(this, "Пропущено поле с паролем!", Toast.LENGTH_SHORT).show()
         } else {
             checkIfExists()
         }
@@ -68,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 progressDialog.dismiss()
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
             .addOnFailureListener { e ->

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.example.cleanuper.authentication.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class StartActivity : AppCompatActivity() {
@@ -15,7 +16,7 @@ class StartActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         Handler().postDelayed(Runnable {
             checkUser()
-        }, 2000);
+        }, 1000);
     }
 
     private fun checkUser() {

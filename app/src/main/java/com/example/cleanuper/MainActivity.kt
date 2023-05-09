@@ -3,6 +3,7 @@ package com.example.cleanuper
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.cleanuper.authentication.LoginActivity
 import com.example.cleanuper.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 

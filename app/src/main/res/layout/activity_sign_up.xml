@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_back"
-    tools:context=".SignUpActivity">
+    tools:context=".authentication.SignUpActivity">
 
     <RelativeLayout
         android:id="@+id/info_layout"
@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_layout"
+        android:layout_marginTop="5dp"
         app:hintEnabled="false">
 
         <EditText

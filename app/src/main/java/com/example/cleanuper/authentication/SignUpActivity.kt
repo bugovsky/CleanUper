@@ -1,4 +1,4 @@
-package com.example.cleanuper
+package com.example.cleanuper.authentication
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import com.example.cleanuper.MainActivity
 import com.example.cleanuper.databinding.ActivitySignUpBinding
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -67,7 +67,7 @@ class SignUpActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 progressDialog.dismiss()
-                Toast.makeText(this, "Не удалось создать аккаунт ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Не удалось создать аккаунт\n${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
@@ -92,7 +92,7 @@ class SignUpActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 progressDialog.dismiss()
-                Toast.makeText(this, "Не удалось сохранить пользователя..  ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Не удалось сохранить пользователя\n${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 }
