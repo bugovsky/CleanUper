@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import com.example.cleanuper.MainActivity
+import com.example.cleanuper.task.*
 import com.example.cleanuper.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -81,6 +82,7 @@ class SignUpActivity : AppCompatActivity() {
         usersData["email"] = email
         usersData["password"] = password
         usersData["timestamp"] = timestamp
+        usersData["tasks"] = arrayListOf<Task>()
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(uid!!)
             .setValue(usersData)

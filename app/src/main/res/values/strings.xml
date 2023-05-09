@@ -6,4 +6,5 @@
     <string name="sign_up"><b>Зарегистрироваться</b></string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="new_account">Создать аккаунт</string>
+    <string name="save">Сохранить</string>
 </resources>
