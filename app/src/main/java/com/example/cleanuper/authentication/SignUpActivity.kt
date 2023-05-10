@@ -34,6 +34,7 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             onBackPressed()
+            finish()
         }
 
         binding.signUpButton.setOnClickListener {

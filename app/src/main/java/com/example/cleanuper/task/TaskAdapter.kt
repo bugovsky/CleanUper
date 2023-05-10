@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cleanuper.R
 
-class TaskAdapter(private val tasks: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val tasks: ArrayList<Task>, private val onItemClick: (Task, String, String, String) -> Unit) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
@@ -18,6 +18,9 @@ class TaskAdapter(private val tasks: ArrayList<Task>) : RecyclerView.Adapter<Tas
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
         holder.bind(task)
+        holder.itemView.setOnClickListener {
+            onItemClick(task, task.title, task.description, task.taskId)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -26,12 +29,13 @@ class TaskAdapter(private val tasks: ArrayList<Task>) : RecyclerView.Adapter<Tas
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(task: Task) {
-            // Привязка данных к элементам CardView
-            val titleTextView = itemView.findViewById<TextView>(R.id.title)
-            val descTextView = itemView.findViewById<TextView>(R.id.description)
+            // Bind data to the CardView elements
+            val title = itemView.findViewById<TextView>(R.id.title)
+            val description = itemView.findViewById<TextView>(R.id.description)
 
-            titleTextView.text = task.title
-            descTextView.text = task.description
+            title.text = task.title
+            description.text = task.description
         }
     }
 }
+

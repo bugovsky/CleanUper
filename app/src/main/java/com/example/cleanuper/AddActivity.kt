@@ -12,23 +12,27 @@ class AddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+            finish()
+        }
         val database = FirebaseDatabase.getInstance()
         val usersRef = database.getReference("Users")
         binding.saveButton.setOnClickListener {
             val title = binding.title.text.toString()
             val description = binding.description.text.toString()
             if (title.isEmpty()) {
-                Toast.makeText(this, "Название задачи не может быть пустым!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Название задачи не может быть пустым!", Toast.LENGTH_SHORT)
+                    .show()
             } else {
-                val task = Task(title, description)
                 val uid = FirebaseAuth.getInstance().currentUser?.uid
                 uid?.let {
                     val userTasksRef = usersRef.child(it).child("tasks")
                     val taskRef = userTasksRef.push()
+                    val uidTask = taskRef.key.toString()
+                    val task = Task(title, description, uidTask)
                     taskRef.setValue(task)
                 }
                 Toast.makeText(this, "Задача сохранена", Toast.LENGTH_SHORT).show()

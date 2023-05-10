@@ -35,7 +35,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
-        adapter = TaskAdapter(taskList)
+        adapter = TaskAdapter(taskList) { task, title, description, uid ->
+            val intent = Intent(this@MainActivity, DetailActivity::class.java)
+            intent.putExtra("title", title)
+            intent.putExtra("description", description)
+            intent.putExtra("uid", uid)
+            startActivity(intent)
+        }
         binding.recyclerTasks.adapter = adapter
 
         binding.addTask.setOnClickListener {
