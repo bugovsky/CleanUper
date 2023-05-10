@@ -18,7 +18,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var progressDialog: ProgressDialog
 
-    private var login = ""
     private var email = ""
     private var password = ""
 
@@ -43,13 +42,10 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun validateData() {
-        login = binding.loginForm.text.toString().trim()
         email = binding.emailForm.text.toString().trim()
         password = binding.passwordForm.text.toString().trim()
         val confirmedPassword = binding.passwordConfirmForm.text.toString().trim()
-        if (login.isEmpty()) {
-            Toast.makeText(this, "Заполните поле с логином!", Toast.LENGTH_SHORT).show()
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Почта неверно заполнена!", Toast.LENGTH_SHORT).show()
         } else if (password.length < 6) {
             Toast.makeText(this, "Пароль должен состоять хотя бы из 6 символов!", Toast.LENGTH_SHORT).show()
@@ -79,7 +75,6 @@ class SignUpActivity : AppCompatActivity() {
         val uid = firebaseAuth.uid
         val usersData : HashMap<String, Any?> = HashMap()
         usersData["uid"] = uid
-        usersData["login"] = login
         usersData["email"] = email
         usersData["password"] = password
         usersData["timestamp"] = timestamp

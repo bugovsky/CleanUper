@@ -34,33 +34,11 @@
     </RelativeLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_layout"
+        android:id="@+id/email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/info_layout"
         android:layout_marginTop="20dp"
-        app:hintEnabled="false">
-
-        <EditText
-            android:id="@+id/login_form"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/email_edit"
-            android:drawableStart="@drawable/ic_person"
-            android:drawablePadding="10dp"
-            android:hint="Логин"
-            android:inputType="textPersonName|textCapWords"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_layout"
-        android:layout_marginTop="5dp"
         app:hintEnabled="false">
 
         <EditText

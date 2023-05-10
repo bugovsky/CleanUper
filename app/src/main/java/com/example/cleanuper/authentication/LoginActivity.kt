@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
                 val signInMethods = result.signInMethods
                 if (signInMethods != null && signInMethods.isEmpty()) {
                     progressDialog.dismiss()
-                    Toast.makeText(this, "Аккаунт не существует", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Аккаунт не найден", Toast.LENGTH_SHORT).show()
                 } else {
                     login()
                 }

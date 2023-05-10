@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.widget.Toast
 import com.example.cleanuper.databinding.ActivityDetailBinding
+import com.example.cleanuper.task.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -31,6 +35,7 @@ class DetailActivity : AppCompatActivity() {
         }
         val taskId = intent.getStringExtra("uid").toString()
         val uid = FirebaseAuth.getInstance().currentUser?.uid
+
         binding.deleteButton.setOnClickListener {
             uid?.let {
                 val taskRef =
@@ -49,6 +54,63 @@ class DetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+            }
+        }
+
+        binding.saveButton.setOnClickListener {
+            uid?.let {
+                val taskRef =
+                    FirebaseDatabase.getInstance().getReference("Users/$uid/tasks").child(taskId)
+                val newTitle = binding.title.text;
+                val newDescription = binding.description.text;
+                if (newTitle.isNullOrEmpty()) {
+                    Toast.makeText(this, "Название задачи не может быть пустым", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    taskRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val task = snapshot.getValue(Task::class.java)
+                            if (task != null) {
+                                task.title = newTitle.toString()
+                                task.description = newDescription.toString()
+                                taskRef.setValue(task)
+                                    .addOnCompleteListener { taskUpdate ->
+                                        if (taskUpdate.isSuccessful) {
+                                            startActivity(
+                                                Intent(
+                                                    this@DetailActivity,
+                                                    MainActivity::class.java
+                                                )
+                                            )
+                                            Toast.makeText(
+                                                this@DetailActivity,
+                                                "Задача обновлена",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            finish()
+                                        } else {
+                                            Toast.makeText(
+                                                this@DetailActivity,
+                                                "Не удалось обновить задачу",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                            } else {
+                                Toast.makeText(
+                                    this@DetailActivity,
+                                    "Задача не найдена",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(this@DetailActivity, error.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    })
+                }
             }
         }
     }
