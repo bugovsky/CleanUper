@@ -10,8 +10,7 @@
     <RelativeLayout
         android:id="@+id/toolbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@drawable/toolbar">
+        android:layout_height="?actionBarSize">
 
         <ImageButton
             android:id="@+id/logout_button"
@@ -21,33 +20,36 @@
             android:background="@android:color/transparent"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
-            android:src="@drawable/ic_log_out" />
-
-        <TextView
-            android:id="@+id/tasks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/logout_button"
-            android:layout_centerHorizontal="true"
-            android:text="Текущие задачи"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:src="@drawable/ic_log_out"
+            app:tint="@color/purple_500" />
     </RelativeLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_layout"
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabMode="scrollable"
+        app:tabIndicatorColor="@color/purple_500"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/purple_500"
+        app:tabTextColor="@android:color/darker_gray" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabLayout" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"
-        android:indeterminateTint="@color/purple_700"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_tasks"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_layout"
-        android:padding="10dp" />
+        android:indeterminateTint="@color/purple_700"
+        android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_task"
@@ -56,8 +58,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="30dp"
-        android:src="@drawable/ic_add"
         android:backgroundTint="@color/purple_500"
-        app:tint="@color/white"/>
+        android:src="@drawable/ic_add"
+        app:tint="@color/white" />
 
 </RelativeLayout>

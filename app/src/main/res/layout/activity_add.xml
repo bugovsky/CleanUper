@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/main_back"
+    android:orientation="vertical"
     tools:context=".AddActivity">
 
     <ImageButton
@@ -21,65 +20,88 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
             android:padding="20dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Новая задача"
-                android:textSize="30sp"
                 android:textAlignment="center"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="30sp" />
 
             <ImageView
+                android:id="@+id/pic"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:src="@drawable/logo"
-                android:id="@+id/pic"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/logo" />
 
             <EditText
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/title"
                 android:layout_marginTop="20dp"
-                android:padding="16dp"
-                android:hint="Название задачи"
                 android:gravity="start|center_vertical"
-                android:textColor="@color/black"/>
+                android:hint="Название задачи"
+                android:padding="16dp"
+                android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:id="@+id/description"
+                android:layout_marginTop="20dp"
+                android:gravity="start|center_vertical"
+                android:hint="Описание"
+                android:padding="16dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Длительность выполнения (дни): 5"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekbar"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Описание"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/black"/>
+                android:max="2"
+                android:thumbTint="@color/green"
+                android:thumbTintMode="src_atop"
+                android:progressTint="@color/green"
+                android:progressBackgroundTint="#D3D3D3"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
 
             <Button
+                android:id="@+id/saveButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/save"
-                android:id="@+id/saveButton"
-                android:textSize="18sp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/login_button"
-                android:textColor="@color/purple_500"/>
+                android:text="@string/save"
+                android:textColor="@color/purple_500"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

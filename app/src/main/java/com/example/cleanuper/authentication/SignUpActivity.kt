@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import com.example.cleanuper.MainActivity
-import com.example.cleanuper.task.*
 import com.example.cleanuper.databinding.ActivitySignUpBinding
+import com.example.cleanuper.task.running.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 

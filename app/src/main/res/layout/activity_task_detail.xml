@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_back"
     android:orientation="vertical"
-    tools:context=".DetailActivity">
+    tools:context=".task.running.TaskDetailActivity">
 
     <ImageButton
         android:id="@+id/back_button"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
@@ -46,7 +46,7 @@
             <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="start|center_vertical"
                 android:hint="Название задачи"
@@ -56,12 +56,20 @@
             <EditText
                 android:id="@+id/description"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="start|center_vertical"
                 android:hint="Описание"
                 android:padding="16dp"
                 android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/done_button"
+                android:backgroundTint="@color/green"
+                android:layout_marginTop="20dp"
+                android:text="Выполнить!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

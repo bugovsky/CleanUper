@@ -4,24 +4,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.LinearLayout
 import com.example.cleanuper.authentication.LoginActivity
 import com.example.cleanuper.databinding.ActivityMainBinding
-import com.example.cleanuper.task.Task
-import com.example.cleanuper.task.TaskAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-    private lateinit var adapter: TaskAdapter
-    private val taskList: ArrayList<Task> = ArrayList()
+    private lateinit var folderAdapter: FolderAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,44 +27,40 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+        folderAdapter = FolderAdapter(this, binding.progressBar)
+        binding.viewPager.adapter = folderAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = folderAdapter.getFolderName(position)
+        }.attach()
+        binding.tabLayout.tabMode = TabLayout.MODE_FIXED
+        binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val selectedTabName = folderAdapter.getFolderName(tab.position)
+                if (selectedTabName == "Выполненные задачи") {
+                    binding.addTask.visibility = View.GONE
+                } else {
+                    binding.addTask.visibility = View.VISIBLE
+                }
 
-        binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
-        adapter = TaskAdapter(taskList) { task, title, description, uid ->
-            val intent = Intent(this@MainActivity, DetailActivity::class.java)
-            intent.putExtra("title", title)
-            intent.putExtra("description", description)
-            intent.putExtra("uid", uid)
-            startActivity(intent)
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val tabWidth = screenWidth / 2
+
+        val tabStrip = binding.tabLayout.getChildAt(0) as LinearLayout
+        for (i in 0 until tabStrip.childCount) {
+            val tabView = tabStrip.getChildAt(i)
+            val layoutParams = tabView.layoutParams as LinearLayout.LayoutParams
+            layoutParams.width = tabWidth
+            tabView.layoutParams = layoutParams
         }
-        binding.recyclerTasks.adapter = adapter
 
         binding.addTask.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddActivity::class.java))
-        }
-
-        val currentUser = firebaseAuth.currentUser
-        val uid = currentUser?.uid
-        uid?.let {
-            val userTasksRef = FirebaseDatabase.getInstance().getReference("Users/$uid/tasks")
-            userTasksRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    taskList.clear()
-                    for (taskSnapshot in snapshot.children) {
-                        val task = taskSnapshot.getValue(Task::class.java)
-                        task?.let {
-                            taskList.add(it)
-                        }
-                    }
-                    adapter.notifyDataSetChanged()
-
-                    binding.progressBar.visibility = View.GONE
-                    binding.recyclerTasks.visibility = View.VISIBLE
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@MainActivity, error.message, Toast.LENGTH_SHORT).show()
-                }
-            })
         }
     }
 }
