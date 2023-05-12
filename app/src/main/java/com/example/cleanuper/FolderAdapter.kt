@@ -8,18 +8,19 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cleanuper.task.finished.FinishedTask
+import com.example.cleanuper.task.finished.FinishedTaskAdapter
+import com.example.cleanuper.task.finished.FinishedTaskDetailActivity
 import com.example.cleanuper.task.running.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class FolderAdapter(private val context: Context, private val progressBar: ProgressBar) : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
     private val folderNames = listOf("Текущие задачи", "Выполненные задачи")
-    private val taskLists: MutableList<ArrayList<Task>> = mutableListOf()
+    private val runningTasks = ArrayList<Task>()
+    private val finishedTasks = ArrayList<FinishedTask>()
 
     init {
-        for (i in folderNames.indices) {
-            taskLists.add(ArrayList())
-        }
         loadTasks()
     }
 
@@ -45,52 +46,86 @@ class FolderAdapter(private val context: Context, private val progressBar: Progr
         val currentUser = FirebaseAuth.getInstance().currentUser
         val uid = currentUser?.uid
         uid?.let {
-            val userTasksRef = FirebaseDatabase.getInstance().getReference("Users/$uid/tasks")
-            userTasksRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    taskLists[0].clear()
-                    taskLists[1].clear()
-                    for (taskSnapshot in snapshot.children) {
-                        val task = taskSnapshot.getValue(Task::class.java)
-                        task?.let {
-                            val isCompleted = task.progress == task.duration
-                            val taskListIndex = if (isCompleted) 1 else 0
-                            taskLists[taskListIndex].add(it)
-                        }
-                    }
-                    notifyDataSetChanged()
-
-                    // Hide the progress bar
-                    progressBar.visibility = View.GONE
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Handle error
-                }
-            })
+            loadRunningTasks(uid)
+            loadFinishedTasks(uid)
         }
     }
 
+    private fun loadFinishedTasks(uid: String?) {
+        val userTasksRef = FirebaseDatabase.getInstance().getReference("Users/$uid/finishedTasks")
+        userTasksRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                finishedTasks.clear()
+                for (taskSnapshot in snapshot.children) {
+                    val task = taskSnapshot.getValue(FinishedTask::class.java)
+                    task?.let {
+                        finishedTasks.add(it)
+                    }
+                }
+                notifyDataSetChanged()
+                progressBar.visibility = View.GONE
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+    private fun loadRunningTasks(uid : String?) {
+        val userTasksRef = FirebaseDatabase.getInstance().getReference("Users/$uid/tasks")
+        userTasksRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                runningTasks.clear()
+                for (taskSnapshot in snapshot.children) {
+                    val task = taskSnapshot.getValue(Task::class.java)
+                    task?.let {
+                        runningTasks.add(it)
+                    }
+                }
+                notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
     inner class FolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val recyclerView: RecyclerView = itemView.findViewById(R.id.recycler_tasks)
-        private lateinit var adapter: TaskAdapter
+        private lateinit var taskAdapter: TaskAdapter
+        private lateinit var finishedTaskAdapter: FinishedTaskAdapter
 
         fun bind(folderName: String) {
-            val taskListIndex = if (folderName == "Выполненные задачи") 1 else 0
-            val tasks = taskLists[taskListIndex]
-
-            recyclerView.layoutManager = LinearLayoutManager(context)
-            adapter = TaskAdapter(tasks) { task, title, description, uid, duration, progress, lastComplete ->
-                val intent = Intent(context, TaskDetailActivity::class.java)
-                intent.putExtra("title", title)
-                intent.putExtra("description", description)
-                intent.putExtra("uid", uid)
-                intent.putExtra("duration", duration.toString())
-                intent.putExtra("progress", progress.toString())
-                intent.putExtra("lastComplete", lastComplete.toString())
-                context.startActivity(intent)
+            if (folderName == folderNames[0]) {
+                recyclerView.layoutManager = LinearLayoutManager(context)
+                taskAdapter =
+                    TaskAdapter(runningTasks) { task, title, description, uid, duration, progress, lastComplete, completes ->
+                        val intent = Intent(context, TaskDetailActivity::class.java)
+                        intent.putExtra("title", title)
+                        intent.putExtra("description", description)
+                        intent.putExtra("uid", uid)
+                        intent.putExtra("duration", duration.toString())
+                        intent.putExtra("progress", progress.toString())
+                        intent.putExtra("lastComplete", lastComplete.toString())
+                        intent.putExtra("completes", completes)
+                        context.startActivity(intent)
+                    }
+                recyclerView.adapter = taskAdapter
+            } else {
+                recyclerView.layoutManager = LinearLayoutManager(context)
+                finishedTaskAdapter =
+                    FinishedTaskAdapter(finishedTasks) { task, title, description, uid, duration, completes ->
+                        val intent = Intent(context, FinishedTaskDetailActivity::class.java)
+                        intent.putExtra("title", title)
+                        intent.putExtra("description", description)
+                        intent.putExtra("uid", uid)
+                        intent.putExtra("duration", duration.toString())
+                        intent.putExtra("completes", completes)
+                        context.startActivity(intent)
+                    }
+                recyclerView.adapter = finishedTaskAdapter
             }
-            recyclerView.adapter = adapter
         }
     }
 }

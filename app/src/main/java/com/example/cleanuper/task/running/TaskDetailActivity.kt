@@ -7,6 +7,7 @@ import android.text.Editable
 import android.widget.Toast
 import com.example.cleanuper.MainActivity
 import com.example.cleanuper.databinding.ActivityTaskDetailBinding
+import com.example.cleanuper.task.finished.FinishedTask
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.*
@@ -57,38 +58,48 @@ class TaskDetailActivity : AppCompatActivity() {
                             calendar.set(Calendar.MILLISECOND, 0)
                             val nextMidnightTime = calendar.timeInMillis
                             if (lastCompleteTime < nextMidnightTime) {
+                                task.lastComplete = currentTime
+                                task.completes.add(currentTime)
                                 ++task.progress
                                 if (task.progress == task.duration) {
-                                    
-                                }
-                                task.lastComplete = currentTime
-                                taskRef.setValue(task)
-                                    .addOnCompleteListener { taskUpdate ->
-                                        if (taskUpdate.isSuccessful) {
-                                            startActivity(
-                                                Intent(
-                                                    this@TaskDetailActivity,
-                                                    MainActivity::class.java
+                                    addFinishedTask(uid, task)
+                                    deleteTask()
+                                    Toast.makeText(
+                                        this@TaskDetailActivity,
+                                        "Задача завершена! Вы можете найти ее в разделе выполненных задач.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    taskRef.setValue(task)
+                                        .addOnCompleteListener { taskUpdate ->
+                                            if (taskUpdate.isSuccessful) {
+                                                startActivity(
+                                                    Intent(
+                                                        this@TaskDetailActivity,
+                                                        MainActivity::class.java
+                                                    )
                                                 )
-                                            )
-                                            Toast.makeText(
-                                                this@TaskDetailActivity,
-                                                "Задача выполнена!",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            finish()
-                                        } else {
-                                            Toast.makeText(
-                                                this@TaskDetailActivity,
-                                                "Не удалось сохранить выполнение...",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                                Toast.makeText(
+                                                    this@TaskDetailActivity,
+                                                    "Задача выполнена!",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                finish()
+                                            } else {
+                                                Toast.makeText(
+                                                    this@TaskDetailActivity,
+                                                    "Не удалось сохранить выполнение...",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
                                         }
-                                    }
+                                }
                             } else {
-                                val remainingTime = nextMidnightTime - currentTime + TimeUnit.DAYS.toMillis(1)
+                                val remainingTime =
+                                    nextMidnightTime - currentTime + TimeUnit.DAYS.toMillis(1)
                                 val remainingHours = TimeUnit.MILLISECONDS.toHours(remainingTime)
-                                val remainingMinutes = TimeUnit.MILLISECONDS.toMinutes(remainingTime) % 60
+                                val remainingMinutes =
+                                    TimeUnit.MILLISECONDS.toMinutes(remainingTime) % 60
                                 Toast.makeText(
                                     this@TaskDetailActivity,
                                     "Выполнить задачу снова можно через $remainingHours часов и $remainingMinutes минут",
@@ -177,6 +188,18 @@ class TaskDetailActivity : AppCompatActivity() {
                     })
                 }
             }
+        }
+    }
+
+    private fun addFinishedTask(uid: String?, task: Task) {
+        val usersRef = FirebaseDatabase.getInstance().getReference("Users")
+        uid?.let {
+            val userTasksRef = usersRef.child(it).child("finishedTasks")
+            val taskRef = userTasksRef.push()
+            val uidTask = taskRef.key.toString()
+            val finishedTask =
+                FinishedTask(task.title, task.description, uidTask, task.duration, task.completes)
+            taskRef.setValue(finishedTask)
         }
     }
 

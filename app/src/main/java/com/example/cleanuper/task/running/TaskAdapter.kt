@@ -10,7 +10,7 @@ import com.example.cleanuper.R
 
 class TaskAdapter(
     private val tasks: ArrayList<Task>,
-    private val onItemClick: (Task, String, String, String, Int, Int, Long) -> Unit
+    private val onItemClick: (Task, String, String, String, Int, Int, Long, ArrayList<Long>) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -29,7 +29,8 @@ class TaskAdapter(
                 task.taskId,
                 task.duration,
                 task.progress,
-                task.lastComplete
+                task.lastComplete,
+                task.completes
             )
         }
     }

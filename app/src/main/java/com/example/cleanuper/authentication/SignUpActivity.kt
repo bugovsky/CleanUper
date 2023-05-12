@@ -79,6 +79,7 @@ class SignUpActivity : AppCompatActivity() {
         usersData["password"] = password
         usersData["timestamp"] = timestamp
         usersData["tasks"] = arrayListOf<Task>()
+        usersData["finishedTasks"] = arrayListOf<Task>()
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(uid!!)
             .setValue(usersData)

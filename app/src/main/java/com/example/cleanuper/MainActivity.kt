@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
         folderAdapter = FolderAdapter(this, binding.progressBar)
         binding.viewPager.adapter = folderAdapter
+
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = folderAdapter.getFolderName(position)
         }.attach()

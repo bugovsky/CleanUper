@@ -34,7 +34,7 @@ class AddActivity : AppCompatActivity() {
                     val taskRef = userTasksRef.push()
                     val uidTask = taskRef.key.toString()
                     val duration = 5 + binding.seekbar.progress * 2
-                    val task = Task(title, description, uidTask, duration, 0, 0)
+                    val task = Task(title, description, uidTask, duration, 0, 0, ArrayList())
                     taskRef.setValue(task)
                 }
                 Toast.makeText(this, "Задача сохранена", Toast.LENGTH_SHORT).show()

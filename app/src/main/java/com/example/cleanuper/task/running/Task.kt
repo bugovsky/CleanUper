@@ -6,7 +6,8 @@ data class Task(
     val taskId: String,
     val duration: Int,
     var progress: Int,
-    var lastComplete: Long
+    var lastComplete: Long,
+    var completes: ArrayList<Long>
 ) {
-    constructor() : this("", "", "", 0, 0, 0)
+    constructor() : this("", "", "", 0, 0, 0, ArrayList())
 }
