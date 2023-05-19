@@ -56,7 +56,8 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:23.1.2"
     implementation "com.google.firebase:firebase-config:21.4.0"
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
-
     implementation 'com.github.clans:fab:1.6.4'
+
+    implementation 'com.github.Philjay:MPAndroidChart:v3.1.0'
 
 }
